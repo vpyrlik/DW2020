@@ -278,14 +278,144 @@ Consider `\(C_Y\)` as the joint distribution of `\(U\)` and apply MLE.
 
 .gb[Pro] Numerically, very close to FMLE, if `\(\hat F_{X_i}\)`s are good.
 
---
-
 .rb[Con] Impractical in HD
 
+---
+class: animated, fadeIn
+###Approaches to estimation
+##Method-of-moments-like estimators
+
+Use the measures of dependence to estimate *(some of)* the parameters of `\(C_Y\)`.
+
 --
 
-.rb[Con] Applied to non-iid pseudo-data as if they are iid
+.gb[Pro] Very practical, even in HD
 
+.rb[Con] Not well-conditioned estimates, sometimes even in LD
+
+--
+
+**Solution**: large covariance matrix estimators can be employed to estimate the matrix parameters of the copulas
+
+--
+
+.blank[.]
+
+.rmk[MPLE needs to be used to estimate the remaining parameter of t copula] 
+
+---
+class: animated, fadeIn
+###The intuition of 
+##Large covariance matrices shrinkage estimators
+
+.center[![](stuff/eigenval_distr.png)]
+
+---
+class: animated, fadeIn
+###The variety of
+##Large covariance matrices shrinkage estimators
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2004). Honey, I shrunk the sample covariance matrix. The Journal of Portfolio Management, 30(4), 110-119.]]
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2004). A well-conditioned estimator for large-dimensional covariance matrices. Journal of multivariate analysis, 88(2), 365-411.]]
+
+--
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2012). Nonlinear shrinkage estimation of large-dimensional covariance matrices. The Annals of Statistics, 40(2), 1024-1060.]]
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2017). Numerical implementation of the QuEST function. Computational Statistics &amp; Data Analysis, 115, 199-223.]]
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2018). Analytical nonlinear shrinkage of large-dimensional covariance matrices. University of Zurich, Department of Economics, Working Paper, (264).]]
+
+---
+class: animated, fadeIn
+###A rough scetch of
+##The simulation study
+
+Given *p*, *n*, *P*, `\(\{F_{X_i}\}_{i=1,...p}\)`, `\(C_Y(u;P)\)` we find and compare `\(\hat P\)`s:
+
+--
+
+1. Simulate data `\(X\)` from `\(C_Y(\{F_{X_i}(x)\}_i;P)\)` and swith to the pseudo-data `\(U_i=\hat F_{X_i}(X_i)\)`.
+
+--
+
+2. Estimate `\(P\)` from a variety of `\(\text{Corr}(U)\)` related measures.
+
+--
+
+3. Evaluate the quality of estimates.
+
+--
+
+4. Repeat 1 - 3 sufficient number of times.
+
+---
+class: animated, fadeIn
+###Some details of
+##The simulation study
+
+###The DGP and data
+
+- **Copulas**: Gaussian and t
+
+--
+
+- **Dimensions**: `\(p\in\{10,100,1000\}\)`
+
+--
+
+- **Dimensionality**: `\(\frac{1}{20}\le\frac{p}{n}\le20\)`
+
+--
+
+- **Matrix parameter**: identity or a non-sparse correlation
+
+--
+
+.rmk[*Other*: skew-t marginals, d.f.=8 for t copula]
+
+---
+class: animated, fadeIn
+###Some details of
+##The simulation study
+
+###The traditional estimators
+
+- Sample analog of Kendall's rank correlation
+
+- Sample analog of approx. Spearman's rank correlation
+
+--
+
+###Suggested alternative estimators
+
+- Linear and non-linear shrinkage estimators of pseudo-observations correlation
+
+--
+
+.rmk[for t copula, the d.f. parameter is estimated via MPLE]
+
+---
+class: animated, fadeIn
+###Some details of
+##The simulation study
+
+###Estimates quality criteria
+
+- **Sanity check**: positive-defineteness of `\(\hat P\)`
+
+--
+
+- **Closeness of the parameters values**: Euclidean loss,
+
+`$$EL(P,\hat P)=||\text{vech}(P-\hat P)||_E^2$$`
+
+--
+
+- **Closeness of the copulas**: Kullback - Leibler IC,
+
+`$$KLIC_{C_{\hat P}|C_P}=\mathbb{E}_{C_P}[\log c_P(u)-\log c_{\hat P}(u)]$$`
 ---
 class: section, center, middle, animated, flipInY
 ## Paper 2
