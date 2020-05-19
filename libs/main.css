@@ -167,7 +167,7 @@ thead, tfoot, tr:nth-child(even) { background: none; }
 
 /* Remove slide count */
 .title-slide .remark-slide-number {
-  text-shadow: none;
+  opacity: 0;
 }
 
 /*~~~~~~~~~~~~~~~~~~*/
@@ -202,6 +202,11 @@ thead, tfoot, tr:nth-child(even) { background: none; }
 
 .title-slide-section-grey p {
   color: #fff;
+}
+
+/* Remove slide count */
+.title-slide .remark-slide-number {
+  opacity: 0;
 }
 
 /*~~~~~~~~~~~~~~~~~~*/
@@ -334,11 +339,11 @@ midd-blockquote {
 
 .rb {
   border: 2px solid #A70B2F;
-  padding-top: 6px;
-  padding-bottom: 2px;
+  padding-top: 5px;
+  padding-bottom: 8px;
   padding-left: 8px;
   padding-right: 8px;
-  font-size: 1.1em;
+  font-size: 0.83em;
   font-weight: bolder;
   color: #A70B2F;
   background: #F68AA3;
@@ -355,10 +360,14 @@ midd-blockquote {
   color: #007A4A;
   background: #4CFBB8;
   position: relative;
-  bottom: 5px;
 } 
 
-/* Add grey tag */
+/* STUFF */
+.blank {
+  font-size: 1em;
+  opacity: 0;
+}
+
 .rmk {
   color: #4C4B4C;
   font-size: 0.8em;
@@ -406,6 +415,10 @@ midd-blockquote {
 .section h3 {
     color: #BC856C;
     font-size: 36px;
+}
+
+.section .remark-slide-number {
+  opacity: 0;
 }
 
 .hands {

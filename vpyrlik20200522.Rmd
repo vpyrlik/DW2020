@@ -1,8 +1,8 @@
 ---
-title: "Applied Time Series: Exercise Session 1"
-subtitle: "Univariate Non-stationarity"
+title: "Ultra-high Dimensional Copulas: Estiamtion & Application"
+subtitle: ""
 author: "Vladimir Pyrlik"
-date: "May 13, 2020"
+date: "May 22, 2020"
 output:
   xaringan::moon_reader:
     mathjax: "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"
@@ -12,54 +12,291 @@ output:
     nature:
       highlightStyle: github
       countIncrementalSlides: false
+      slideNumberFormat: "%current%/%total%"
       highlightLines: true
       ratio: "8:5"
 ---
-class: hands, center, middle, animated, flipInY
-
-##Have you all got EViews installed?
-
-### Which versions?
-
----
-class: center, animated, fadeIn
-##Class Materials
-
-The materials are avialble either on CMS or [Padlet.com/vpyrlik/ATS20ES](htpp://padlet.com/vpyrlik/ATS20ES)
-
---
-
-![](stuff/es1data.png)
-
-###Or direct link to the data with *Student version of EV friendly WFs!*
+class: section, center, middle, animated, flipInY
+##Introduction
+#Copulas & High Dimensionality
 
 ---
 class: animated, fadeIn
-#Outline
+##Copulas & High Dimensionality
 
-##We are following the setup of ES1 from the course materials
-
-###Warm-up: Exercise 1
-
---
-
-###Ideally today: Exercises 2 & 4
+- **Copulas**: a convenient approach to generate flexible multivariate distributions
+ 
+- **Dimensionality Curse**: in HD, either the existing frameworks are not flexible enough, or estimation is very hard to handle
 
 --
 
-###One of the next times: Exercise 6
+- **Possible solutions**: dimensionality breakdown, structural restrictions, *shrinkage*
 
 ---
-class: hands, middle, animated, flipInY
+class: animated, fadeIn
+## Presentation Outline
 
-### Quick recall
+- Copulas: **the briefest introduction**
 
-## What have we learned on the lectures?
+--
+
+- **Paper 1**: Shrinkage for Gaussian and t Copulas in UHD
+
+  - Methodology & **main results**
+
+  - **Empirical example**: large portfolio allocation
+
+--
+
+- **Paper 2**: Copula-based Combination of (Ultra-)many Forecasts *(proposal)*
+
+---
+class: section, center, middle, animated, flipInX
+##The briefest introduction into
+#Copulas
+
+---
+class: animated, fadeIn
+##What are copulas?
+
+- Copula is a *p*-variate CDF that lives on $[0,1]^p$
+
+--
+
+## Why are copulas important?
+
+- **Sklar's theorem**: $F_Y(y_1,...y_p)=C_Y(F_1(y_1),...F_p(y_p))$
+
+--
+
+- **The converse holds, too**: borrow a copula of one distribution, feed an arbitrary set of margins to it, and obtain a new multivariate distribution.
+
+---
+class: section, center, middle, animated, flipInY
+## Paper 1
+#Shrinkage for Gaussian and t Copulas
+#in Ultra-high Dimensions
+
+---
+class: animated, fadeIn
+## What we do
+
+- consider Gaussian and t copulas in (U)HD
+
+- adopt and evaluate the performance of shrinkage estimators of large covariance matrices via a simulation study
+
+- apply the UHD t copula to improve large portfolio allocation in the stock market
+
+---
+class: animated, fadeIn
+##Outline
+
+- Gaussian and t copulas: motivation and properties
+
+- Shrinkage estimators
+
+- Simulation study design and results
+
+- Empirical example: large portrfolio allocation
+
+
+---
+class: animated, fadeIn
+###Popular classes of copulas
+
+##Archimedean copulas
+
+.gb[Pro] Have analytical forms and well established properties
+
+.gb[Pro] Easily extendable to HD
+
+--
+
+.rb[Con] Very rigid: parameter is always low dimensional
+
+---
+class: animated, fadeIn
+###Popular classes of copulas
+##Pair copula constructions aka Vines
+
+.gb[Pro] The most flexible copula structure there can be
+
+--
+
+.rb[Con] Requires structural assumptions on the data
+
+.rb[Con] HD is very hard to handle
+
+---
+class: animated, fadeIn
+###Popular classes of copulas
+##Elliptical copulas
+
+.gb[Pro] Extendable to and remain flexible in HD
+
+.rb[Con] Traditional estimators fail in HD
+
+--
+
+.blank[.]
+
+- Most popular members: **Gaussian & t copulas**
+
+- Used in a **vast variety of applications**
+
+- **HD is appealing** (many variables or short samples)
+
+---
+class: animated, fadeIn
+###Defenition & important properties
+##General notation
+
+Consider a *p*-dimensional r.v. $Y=(Y_1,...Y_p)'$ with joint CDF $F_Y(y_1,...y_p;\theta)$ and marginal CDFs $\{F_i(y_i;\theta)\}_{i=1,...p}$,
+
+--
+
+and a transformed r.v. $U=(U_1,...U_p)'$, s.t. $U_i=F_i(Y_i;\theta).$
+
+--
+
+The joint CDF $C_Y(u;\theta)$ of $U$ is called **the copula function of $F_Y$**,
+
+--
+
+and its density $c_Y(u;\theta)$ is **the copula density function**.
+
+---
+class: animated, fadeIn
+###Defenition & important properties
+##Gaussian copula
+
+$$Y\sim\mathcal{N}(\mathbb{O}_p;P),\;\text{and}\;U_i=\Phi_{0,1}(Y_i).$$
+
+--
+
+The joint CDF of $U$ is **the Gaussian copula**:
+
+$$C_{\mathcal{N}}(u;P)=F_{\mathcal{N(\mathbb{O}_p,P)}}(\phi(u);P),$$
+
+with the **copula density**
+
+$$\log c_\mathcal{N}(u;P)=-\frac{1}{2}\log|P|-\frac{1}{2}\phi'(u)\cdot(P^{-1}-I_p)\cdot\phi(u),$$
+
+$$\phi(u)=\big(\Phi_{0,1}^{-1}(u_1),...,\Phi_{0,1}^{-1}(u_p)\big)'.$$
+
+---
+class: animated, fadeIn
+###Measures of dependence
+##Gaussian copula
+
+- **Kendall's rank correlation**: $\tau_{ij}=\frac{2}{\pi}\text{asin}(P_{ij})$.
+
+- **Spearman's rank correlation**: $\text{Corr}(U)=\frac{6}{\pi}\text{asin}\left(\frac{P}{2}\right)$.
+
+--
+
+- **Approx. Spearman's rank correlation**: $\text{Corr}(U)\approx P$.
+
+--
+
+- **Underlying r.v. *Y* correlation**: $\text{Corr(Y)}=P$.
+
+---
+class: animated, fadeIn
+###Defenition & important properties
+##t copula
+
+$$Y\sim MVT(P,\nu),\;\text{and}\;U_i=t_\nu(Y_i;\nu).$$
+
+--
+
+### Measures of dependence
+
+- **Kendall's rank correlation**: $\tau_{ij}=\frac{2}{\pi}\text{asin}(P_{ij})$.
+
+--
+
+- **Approx. Spearman's rank correlation**: $\text{Corr}(U)\approx P$.
+
+--
+
+- **Underlying r.v. *Y* correlation**: $\text{Corr(Y)}=P$.
+
+---
+class: animated, flipInX
+###Why t copula?
+##Tail dependence
+
+.center[![](stuff/snp500_top3_logr.png)]
+
+---
+class: animated, fadeIn
+##Approaches to estimation
+###Main idea
+Given the DGP
+
+$$X\sim F_X=C_Y(F_{X_1}(x_1;\theta_1),...F_{X_p}(x_p;\theta_p);\Theta_C)$$
+
+--
+
+the copula-related part and the marginals can be estimated separately:
+
+1. Estimate the marginals $\{\hat F_{X_i}(x)\}_{i=1,...p}$
+
+--
+
+2. Use the **pseudo-data** $U_i=\hat F_{X_i}(X_i)$ to estimate $C_Y$.
+
+---
+class: animated, fadeIn
+###Approaches to estimation
+##Full MLE
+
+--
+
+Jointly estimates the whole distribution of *X*, **disregarding the copula construction of $F_X$**.
+
+.gb[Pro] The efficient estimator
+
+--
+
+.rb[Con] Might be impractical even in LD
+
+.rb[Con] Crucially impractical in moderate and HD
+
+---
+class: animated, fadeIn
+###Approaches to estimation
+##Maximum pseudo-likelihood estimation (MPLE)
+
+Consider $C_Y$ as the joint distribution of $U$ and apply MLE.
+
+--
+
+.gb[Pro] Numerically, very close to FMLE, if $\hat F_{X_i}$s are good.
+
+--
+
+.rb[Con] Impractical in HD
+
+---
+class: animated, bounceIn
+###Approaches to estimation
+##Maximum pseudo-likelihood estimation (MPLE)
+
+
+---
+class: section, center, middle, animated, flipInY
+## Paper 2
+# ...
+###(Proposal)
+
+---
+class: animated, fadeIn
+## ...
 
 ---
 class: section, animated, bounceIn
 ##Thank you!
 
-###Check the course materisals on Padlet for the solutions!
 
-#See you in a week!
