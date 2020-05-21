@@ -416,12 +416,283 @@ $$KLIC_{C_{\hat P}|C_P}=\mathbb{E}_{C_P}[\log c_P(u)-\log c_{\hat P}(u)]$$
 
 ---
 class: animated, fadeIn
+##Main results
+###Well-conditioned estimates
 
+- The traditional estiamtors are only positive-definite under LD.
+
+- Shrinkage-based estimators guarantee positive-defineteness.
+
+---
+class: animated, fadeIn
+##Main results
+###Distance measures
+
+- Shrinkage-based estimators generally outperform the traditional ones, very significantly in HD
+
+--
+
+- Non-linear shrinkage tends to outperform the linear one
+
+--
+
+- Few settings where the linear shrinkage is better
+
+  - Not very dispersed true eigenvalues
+  
+  - Sparse (identity) correlation matrix & short samples 
+
+--
+
+  - .rmk[even then the gain of LSh is minimal]
+
+---
+class: animated, fadeIn
+##Main results
+###A typical performance slice #1
+
+.center[The "winning" KLIC: p=100, arbitrary P, Gaussian copula]
+
+.center[![](stuff/best_estimators_7_KLIC.png)]
+
+---
+class: animated, fadeIn
+##Main results
+###A typical performance slice #2
+
+.center[The "winning" KLIC: p=1000, identity P, t copula]
+
+.center[![](stuff/best_estimators_10_KLIC2.png)]
+
+---
+class: section, middle, center, animated, flipInY
+##UHD t copula application for
+#Large portfolio allocation
+###Empirical example
+
+---
+class: animated, fadeIn
+##What we do
+We apply t copula shrinkage estimation to allocate large portfolios of stocks and compare their performance with portfolio choices based on the traditional  estimators.
+
+--
+
+##Outline
+
+ - **Copulas & portfolios**: motivation and intuition
+ 
+ - **Why UHD?** Data description
+ 
+ - **Modeling technique**
+ 
+ - **Main results and discussion**
+
+---
+class: animated, fadeIn
+##Copulas & portfolios
+
+- Portfolio allocation is **one of the most popular applications** for the models of joint distribution of assets prices
+
+--
+
+- Portfolios' performance crucially depends on the **ability of the models to capture essential properties** of the data
+
+--
+
+  - Copulas allow to create **flexible models**
+  
+  - **Tail dependence** proved to be of dramatic importance
+
+---
+class: animated, fadeIn
+###Data description
+##Why UHD?
+
+- We use the listing of Wilshire 5000 index and obtain data on 3600+ assets from CRSP
+
+--
+
+- Each portfolio contains .bb[p=2500 assets] chosen randomly
+
+--
+
+- The univariate models of returns dynamics are simple
+
+- Only 6 months of 2017 are used for estimation, .bb[n=120 obs]
+
+--
+
+- Thus, the dimensionality is .bb[p/n > 20]
+
+---
+class: animated, fadeIn
+##Modeling technique
+
+###1. The timeline
+
+###2. Univariate asset's returns dynamics modeling
+
+###3. Joint distribution of the prices modeling and prediction
+
+###4. Portfolio allocation
+
+###5. Portfolio performance measurement
+
+---
+class: animated, fadeIn
+##Modeling technique
+###1. The timeline
+ 
+ - January - June 2017: training period
+
+--
+
+ - end of June, 2017: portfolio allocation
+
+--
+
+ - July - September, 2017: portfolio lifetime
+
+--
+
+ - end of September, 2017: performance measurement
+
+---
+class: animated, fadeIn
+##Modeling technique
+###2. The univariate modeling
+
+- The assets prices dynamics are stationarized by taking the daily log-returns
+
+- ARMA (up to 5,5) is used to filter out the conditional mean
+
+  - .rmk[the best ARMA: minimal AIC among those without residual autocorrelation]
+
+- **Serially uncorrelated residuals are extracted** 
+
+---
+class: animated, fadeIn
+##Modeling technique
+###3a. Joint distribution modeling
+
+**4 estimates of the joint distribution of the residual returns**:
+
+1. MVN (basic sample estimator)
+
+--
+
+2. t copula over ECDFs:
+ 
+--
+
+ - sample estimator
+ 
+ - linear shrinkage estimator
+ 
+ - non-linear shrinkage estimator
+
+---
+class: animated, fadeIn
+##Modeling technique
+###3b. Joint distribution prediction
+
+**To predict the distribution of the assets prices out-of-sample, Monte-Carlo is employed**
+
+1. Joint dynamics of the residual returns is simulated from MVN or copula model
+
+2. Log-returns dynamics is restored accordingly
+
+3. The original prices dynamics is calculated
+
+---
+class: animated, fadeIn
+##Modeling technique
+###4. Portfolio allocation
+
+- *Static portfolio allocation, no t.c. or other frictions*
+
+--
+
+- **The benchmark**: equally weighted portfolio
+
+--
+
+- **Model-based portfolios**: Sharpe ratio maximizers
+
+--
+
+- .rmk[Numerically, the allocation problem is a disaster. Hence, MC is employed, again. A choice among pre-determined portfolio structures is perforemed.]
+
+---
+class: animated, fadeIn
+##Modeling technique
+###5. Portfolio performance measurement
+
+- We track the actual dynamics of the portfolios value over their lifetime period according to the actual assets prices
+
+--
+
+- We measure **the actual return over the whole lifetime**
+
+--
+
+- We measure **maximum drop down of the current value within the lifetime**
+
+--
+
+- We compare the performance of the model-based choices to the equally weighted portfolio
+
+---
+class: animated, flipInX
+##Main results
+###Lifetime portfolios value dynamic. Example #1
+
+.center[![](stuff/return1.png)]
+
+---
+class: animated, flipInY
+##Main results
+###Lifetime portfolios value dynamic. Example #2
+.center[![](stuff/return4.png)]
+
+---
+class: animated, bounceIn
+##Main results
+###Portfolios performance overview
+.center[![](stuff/returns.png) .blank[..........] ![](stuff/downfalls.png)]
+
+---
+class: section, middle, animated, flipInX
+###Paper 1
+##Discussion and Further Research
+
+---
+class: animated, fadeIn
+##Results & further research
+
+###1. Shrinkage is a powerful tool of estimation for copulas
+
+.bb[Further in this paper:] other estimators of matrix parameters
+
+--
+
+.bb[Another work:] extended copulas (skewed versions)
+
+--
+
+###2. HD Copula modeling is beneficial in portfolio allocation
+
+.bb[Another work:] a profound dynamic model of joint distribution of assets prices based on copula and shrinkage
+
+--
+
+.bb[Another work:] copula-based forecast combination technique
 
 ---
 class: section, center, middle, animated, flipInY
 ## Paper 2
-# ...
+#Copula-based Combination
+#of Ultra-many Forecasts
 ###(Proposal)
 
 ---
