@@ -1,6 +1,6 @@
 ---
-title: "Ultra-high Dimensional Copulas: Estiamtion & Application"
-subtitle: ""
+title: "DW Mock presentations"
+subtitle: "Ultra-high Dimensional Copulas:</br>Estimation & Application"
 author: "Vladimir Pyrlik"
 date: "May 22, 2020"
 output:
