@@ -690,14 +690,33 @@ class: animated, fadeIn
 
 ---
 class: section, center, middle, animated, flipInY
-## Paper 2
+##Paper 2
 #Copula-based Combination
 #of Ultra-many Forecasts
 ###(Proposal)
 
 ---
 class: animated, fadeIn
-## ...
+###Copula-based Combination of Ultra-many Forecasts
+##Motivation
+
+- Forecast combination is similar to the portfolio allocation.
+
+--
+
+- When the **number of alternative predictors is large** and they belong to a class of similar predictors, the forecast errors are likely to be with a certain degree of tail dependence.
+
+--
+
+- Validation must be basewd on recent information, hence, **the samples need to be short**.
+
+--
+
+- **HD estimators will allow to use more predictors** and construct more accurate forecasts.
+
+--
+
+- **Copula-based models are likely to improve the performance of the combined forecast**.
 
 ---
 class: section, animated, bounceIn
