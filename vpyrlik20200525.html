@@ -4,7 +4,7 @@
     <title>DW 2020</title>
     <meta charset="utf-8" />
     <meta name="author" content="Vladimir Pyrlik" />
-    <meta name="date" content="2020-05-22" />
+    <meta name="date" content="2020-05-25" />
     <link rel="stylesheet" href="libs\main.css" type="text/css" />
     <link rel="stylesheet" href="libs\fonts.css" type="text/css" />
     <link rel="stylesheet" href="libs\animate.css" type="text/css" />
@@ -16,39 +16,26 @@ class: center, middle, inverse, title-slide
 # DW 2020
 ## Ultra-high Dimensional Copulas:</br>Estimation &amp; Application
 ### Vladimir Pyrlik
-### May 22, 2020
+### May 25, 2020
 
 ---
 
-class: section, center, middle, animated, flipInY
-##Introduction
-#Copulas &amp; High Dimensionality
-
----
-class: animated, fadeIn
-##Copulas &amp; High Dimensionality
-
-- **Copulas**: a convenient approach to generate flexible multivariate distributions
- 
-- **Dimensionality Curse**: in HD, either the existing frameworks are not flexible enough, or estimation is very hard to handle
-
---
-
-- **Possible solutions**: dimensionality breakdown, structural restrictions, *shrinkage*
-
----
 class: animated, fadeIn
 ## Presentation Outline
 
 - Copulas: **the briefest introduction**
 
+&lt;/br&gt;
+
 --
 
-- **Paper 1**: Shrinkage for Gaussian and t Copulas in UHD
+- **Paper 1**: Shrinkage for Gaussian and t Copulas in UHD .pull-right[.rmk[*jointly with Stanislav Anatolyev*]]
 
   - Methodology &amp; **main results**
 
   - **Empirical example**: large portfolio allocation
+
+&lt;/br&gt;
 
 --
 
@@ -69,11 +56,33 @@ class: animated, fadeIn
 
 ## Why are copulas important?
 
-- **Sklar's theorem**: `\(F_Y(y_1,...y_p)=C_Y(F_1(y_1),...F_p(y_p))\)`
+- **Sklar's theorem**: `\(F_Y(y_1,...y_p)=C_{F_Y}(F_1(y_1),...F_p(y_p))\)`
 
 --
 
-- **The converse holds, too**: borrow a copula of one distribution, feed an arbitrary set of margins to it, and obtain a new multivariate distribution.
+  - .rmk[**The converse holds**, too: borrow a copula of one distribution, feed an arbitrary set of marginals to it, and obtain a new multivariate distribution.]
+
+--
+
+- **Copulas**: a very convenient approach to generate flexible multivariate distributions.
+
+---
+class: animated, fadeIn
+##What is "High-dimensional"?
+
+- **HD**: number of variables `\(p\)` exceeds sample size `\(n\)`
+
+--
+&lt;/br&gt;
+
+##Copulas &amp; High Dimensionality
+
+ 
+- **Dimensionality Curse**: in HD, either the existing frameworks are not flexible enough, or estimation is very hard to handle
+
+--
+
+- **Possible solutions**: dimensionality breakdown, structural restrictions, *shrinkage*
 
 ---
 class: section, center, middle, animated, flipInY
@@ -87,22 +96,23 @@ class: animated, fadeIn
 
 - consider Gaussian and t copulas in (U)HD
 
-- adopt and evaluate the performance of shrinkage estimators of large covariance matrices via a simulation study
+- use shrinkage estimators of large covariance matrices
 
-- apply the UHD t copula to improve large portfolio allocation in the stock market
+- apply the UHD t copula in large stocks portfolio allocation
 
 ---
 class: animated, fadeIn
 ##Outline
 
-- Gaussian and t copulas: motivation and properties
+1. Gaussian and t copulas: motivation and properties
 
-- Shrinkage estimators
+2. Shrinkage estimators
 
-- Simulation study design and results
+3. Simulation study design and results
 
-- Empirical example: large portfolio allocation
+4. Empirical example: large portfolio allocation
 
+5. Further research
 
 ---
 class: animated, fadeIn
@@ -114,18 +124,13 @@ class: animated, fadeIn
 
 .gb[Pro] Easily extendable to HD
 
---
-
 .rb[Con] Very rigid: parameter is always low dimensional
 
----
-class: animated, fadeIn
-###Popular classes of copulas
-##Pair copula constructions aka Vines
+--
+
+##Pair copula constructions *aka* .blank[.]Vines
 
 .gb[Pro] The most flexible copula structure there can be
-
---
 
 .rb[Con] Requires structural assumptions on the data
 
@@ -163,11 +168,17 @@ and a transformed r.v. `\(U=(U_1,...U_p)'\)`, s.t. `\(U_i=F_i(Y_i;\theta).\)`
 
 --
 
-The joint CDF `\(C_Y(u;\theta)\)` of `\(U\)` is called **the copula function of `\(F_Y\)`**,
+The joint CDF `\(C_{F_Y}(u;\theta)\)` of `\(U\)` is **the copula function of `\(F_Y\)`**,
 
 --
 
-and its density `\(c_Y(u;\theta)\)` is **the copula density function**.
+and its density `\(c_{F_Y}(u;\theta)\)` is **the copula density function**.
+
+--
+
+&lt;/br&gt;
+
+.rmk[*U*s are legit r.v. and are dealt accordingly:&lt;/br&gt;all the dependency measures, transformations, etc. can be obtained]
 
 ---
 class: animated, fadeIn
@@ -225,6 +236,7 @@ class: animated, fadeIn
 --
 
 - **Underlying r.v. *Y* correlation**: `\(\text{Corr(Y)}=P\)`.
+.pull-right[.rmk[transformations between *Y* and *U* require knowledge of d.f.]]
 
 ---
 class: animated, flipInX
@@ -239,7 +251,7 @@ class: animated, fadeIn
 ###Main idea
 Given the DGP
 
-`$$X\sim F_X=C_Y(F_{X_1}(x_1;\theta_1),...F_{X_p}(x_p;\theta_p);\Theta_C)$$`
+`$$X\sim F_X=C_{F_Y}(F_{X_1}(x_1;\theta_1),...F_{X_p}(x_p;\theta_p);\Theta_C)$$`
 
 --
 
@@ -254,28 +266,17 @@ the copula-related part and the marginals can be estimated separately:
 ---
 class: animated, fadeIn
 ###Approaches to estimation
-##Full MLE
-
---
-
-Jointly estimates the whole distribution of *X*, **disregarding the copula construction of `\(F_X\)`**.
+##Full MLE .rmk[Disregards the copula structure]
 
 .gb[Pro] The efficient estimator
 
---
-
-.rb[Con] Might be impractical even in LD
-
-.rb[Con] Crucially impractical in moderate and HD
-
----
-class: animated, fadeIn
-###Approaches to estimation
-##Maximum pseudo-likelihood estimation (MPLE)
-
-Consider `\(C_Y\)` as the joint distribution of `\(U\)` and apply MLE.
+.rb[Con] Impractical even in LD, crucially impractical in HD
 
 --
+
+&lt;/br&gt;
+
+##Pseudo-likelihood (MPLE) .rmk[Treats the copula as the distribution of *U*.]
 
 .gb[Pro] Numerically, very close to FMLE, if `\(\hat F_{X_i}\)`s are good.
 
@@ -286,7 +287,7 @@ class: animated, fadeIn
 ###Approaches to estimation
 ##Method-of-moments-like estimators
 
-Use the measures of dependence to estimate *(some of)* the parameters of `\(C_Y\)`.
+.rmk[Use the measures of dependence to estimate *some of* the parameters of copula]
 
 --
 
@@ -296,13 +297,13 @@ Use the measures of dependence to estimate *(some of)* the parameters of `\(C_Y\
 
 --
 
-**Solution**: large covariance matrix estimators can be employed to estimate the matrix parameters of the copulas
+&lt;/br&gt;
+
+.bb[Solution] large covariance matrix estimators can be employed 
 
 --
 
-.blank[.]
-
-.rmk[MPLE needs to be used to estimate the remaining parameter of t copula] 
+.pull-right[.rmk[MPLE needs to be used to estimate the remaining parameter of t copula] ]
 
 ---
 class: animated, fadeIn
@@ -366,11 +367,11 @@ class: animated, fadeIn
 
 --
 
-- **Dimensionality**: `\(\frac{1}{20}\le\frac{p}{n}\le20\)`
+- **Matrix parameter**: identity or a non-sparse correlation
 
 --
 
-- **Matrix parameter**: identity or a non-sparse correlation
+- **Dimensionality**: `\(\frac{1}{20}\le\frac{p}{n}\le20\)` .blank[.].gb[UHD!]
 
 --
 
@@ -440,15 +441,11 @@ class: animated, fadeIn
 
 --
 
-- Few settings where the linear shrinkage is better
+- Few settings where the linear shrinkage is better .pull-right[.rmk[even then the gain of LSh is minimal]]
 
   - Not very dispersed true eigenvalues
   
   - Sparse (identity) correlation matrix &amp; short samples 
-
---
-
-  - .rmk[even then the gain of LSh is minimal]
 
 ---
 class: animated, fadeIn
@@ -516,140 +513,41 @@ class: animated, fadeIn
 
 --
 
-- Each portfolio contains .bb[p=2500 assets] chosen randomly
+- Each portfolio contains .bb[*p*=2500 assets] chosen randomly
 
 --
 
 - The univariate models of returns dynamics are simple
 
-- Only 6 months of 2017 are used for estimation, .bb[n=120 obs]
+- Only 6 months of 2017 are used for estimation, .bb[*n*=120 obs]
 
 --
 
-- Thus, the dimensionality is .bb[p/n &gt; 20]
+- Thus, the dimensionality is .bb[*p/n* &gt; 20] .blank[.].gb[UHD!]
 
 ---
 class: animated, fadeIn
-##Modeling technique
-
-###1. The timeline
-
-###2. Univariate asset's returns dynamics modeling
-
-###3. Joint distribution of the prices modeling and prediction
-
-###4. Portfolio allocation
-
-###5. Portfolio performance measurement
-
----
-class: animated, fadeIn
-##Modeling technique
-###1. The timeline
+###Modeling technique
+##The timeline
  
- - January - June 2017: training period
+ - January - June, 2017: **training period** &lt;/br&gt; .rmk[4 models of assets prices joint distr. are estimated]
 
 --
 
- - end of June, 2017: portfolio allocation
+ - end of June, 2017: **portfolio allocation** &lt;/br&gt; .rmk[each model produces Sharpe-maximizing portfolio]
 
 --
 
- - July - September, 2017: portfolio lifetime
+ - July - September, 2017: **portfolio lifetime** &lt;/br&gt; .rmk[actual portfolio value is observed]
 
 --
 
- - end of September, 2017: performance measurement
-
----
-class: animated, fadeIn
-##Modeling technique
-###2. The univariate modeling
-
-- The assets prices dynamics are stationarized by taking the daily log-returns
-
-- ARMA (up to 5,5) is used to filter out the conditional mean
-
-  - .rmk[the best ARMA: minimal AIC among those without residual autocorrelation]
-
-- **Serially uncorrelated residuals are extracted** 
-
----
-class: animated, fadeIn
-##Modeling technique
-###3a. Joint distribution modeling
-
-**4 estimates of the joint distribution of the residual returns**:
-
-1. MVN (basic sample estimator)
-
---
-
-2. t copula over ECDFs:
- 
---
-
- - sample estimator
- 
- - linear shrinkage estimator
- 
- - non-linear shrinkage estimator
-
----
-class: animated, fadeIn
-##Modeling technique
-###3b. Joint distribution prediction
-
-**To predict the distribution of the assets prices out-of-sample, Monte-Carlo is employed**
-
-1. Joint dynamics of the residual returns is simulated from MVN or copula model
-
-2. Log-returns dynamics is restored accordingly
-
-3. The original prices dynamics is calculated
-
----
-class: animated, fadeIn
-##Modeling technique
-###4. Portfolio allocation
-
-- *Static portfolio allocation, no t.c. or other frictions*
-
---
-
-- **The benchmark**: equally weighted portfolio
-
---
-
-- **Model-based portfolios**: Sharpe ratio maximizers
-
---
-
-- .rmk[Numerically, the allocation problem is a disaster. Hence, MC is employed, again. A choice among pre-determined portfolio structures is performed.]
-
----
-class: animated, fadeIn
-##Modeling technique
-###5. Portfolio performance measurement
-
-- We track the actual dynamics of the portfolios value over their lifetime period according to the actual assets prices
-
---
-
-- We measure **the actual return over the whole lifetime**
-
---
-
-- We measure **maximum drop down of the current value within the lifetime**
-
---
-
-- We compare the performance of the model-based choices to the equally weighted portfolio
+ - end of September, 2017: **performance measurement** &lt;/br&gt; .rmk[the final return and maximum drop-down are tracked]
 
 ---
 class: animated, flipInX
 ##Main results
-###Lifetime portfolios value dynamic. Example #1
+###Lifetime portfolios value dynamic: Example #1
 
 .center[![](stuff/return1.png)]
 
@@ -678,8 +576,6 @@ class: animated, fadeIn
 
 .bb[Further in this paper:] other estimators of matrix parameters
 
---
-
 .bb[Another work:] extended copulas (skewed versions)
 
 --
@@ -687,8 +583,6 @@ class: animated, fadeIn
 ###2. HD Copula modeling is beneficial in portfolio allocation
 
 .bb[Another work:] a profound dynamic model of joint distribution of assets prices based on copula and shrinkage
-
---
 
 .bb[Another work:] copula-based forecast combination technique
 
