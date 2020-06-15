@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Vladimir Pyrlik .rmk[(talking)] and Stanislav Anatolyev</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="CEBA Talks" />
+    <meta name="date" content="2020-06-12" />
+    <link rel="stylesheet" href="libs\main.css" type="text/css" />
+    <link rel="stylesheet" href="libs\fonts.css" type="text/css" />
+    <link rel="stylesheet" href="libs\animate.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# <em>Vladimir Pyrlik</em> .rmk[(talking)] and <em>Stanislav Anatolyev</em>
+## Shrinkage for Gaussian and t Copulas in UHD
+### CEBA Talks
+### June 12, 2020
+
+---
+
+class: animated, fadeIn
+## Presentation Outline
+
+- Copulas &amp; HD: **the briefest introduction**
+
+&lt;/br&gt;
+
+--
+
+- **Shrinkage for Gaussian and t Copulas in UHD**
+
+&lt;/br&gt;
+
+--
+
+- Further research
+
+&lt;/br&gt;
+
+--
+
+- **Shrinkage of large covariance matrices**: technical notes
+
+---
+class: section, center, middle, animated, flipInX
+##The briefest introduction into
+#Copulas &amp; HD
+
+---
+class: animated, fadeIn
+##What are copulas?
+
+- Copula is a multivariate CDF with `\(U[0,1]\)` marginals
+
+--
+
+## Why are copulas important?
+
+- **Sklar's theorem**: `\(F_Y(y_1,...y_p)=C_{F_Y}(F_1(y_1),...F_p(y_p))\)`
+
+--
+
+  - .rmk[**The converse holds**, too: borrow a copula of one distribution, feed an arbitrary set of marginals to it, and obtain a new multivariate distribution.]
+
+--
+
+- **Copulas**: a very convenient approach to generate flexible multivariate distributions.
+
+---
+class: animated, fadeIn
+##What is "High-dimensional"?
+
+- **HD**: number of variables `\(p\)` exceeds sample size `\(n\)`
+
+--
+&lt;/br&gt;
+
+##Copulas &amp; High Dimensionality
+
+ 
+- **Dimensionality Curse**: in HD, either the existing frameworks are not flexible enough, or estimation is very hard to handle
+
+--
+
+- **Possible solutions**: dimensionality breakdown, structural restrictions, *shrinkage*
+
+---
+class: section, center, middle, animated, flipInY
+#Shrinkage for Gaussian and t Copulas
+#in Ultra-high Dimensions
+
+---
+class: animated, fadeIn
+## What we do
+
+- consider Gaussian and t copulas in (U)HD
+
+- use shrinkage estimators of large covariance matrices
+
+- apply the UHD t copula in large stocks portfolio allocation
+
+---
+class: animated, fadeIn
+##Outline
+
+1. Gaussian and t copulas: motivation and properties
+
+2. Shrinkage estimators
+
+3. Simulation study design and results
+
+4. Empirical example: large portfolio allocation
+
+5. Further research
+
+---
+class: animated, fadeIn
+###Popular classes of copulas
+
+##Archimedean copulas
+
+.gb[Pro] Have analytical forms and well established properties
+
+.gb[Pro] Easily extendable to HD
+
+.rb[Con] Very rigid: parameter is always low dimensional
+
+--
+
+##Pair copula constructions *aka* .blank[.]Vines
+
+.gb[Pro] The most flexible copula structure there can be
+
+.rb[Con] Requires structural assumptions on the data
+
+.rb[Con] HD is very hard to handle
+
+---
+class: animated, fadeIn
+###Popular classes of copulas
+##Elliptical copulas
+
+.gb[Pro] Extendable to and remain flexible in HD
+
+.rb[Con] Traditional estimators fail in HD
+
+--
+
+.blank[.]
+
+- Most popular members: **Gaussian &amp; t copulas**
+
+- Used in a **vast variety of applications**
+
+- **HD is appealing** (many variables or short samples)
+
+---
+class: animated, fadeIn
+###Definition &amp; important properties
+##General notation
+
+Consider a *p*-dimensional r.v. `\(Y=(Y_1,...Y_p)'\)` with joint CDF `\(F_Y(y_1,...y_p;\theta)\)` and marginal CDFs `\(\{F_i(y_i;\theta)\}_{i=1,...p}\)`,
+
+--
+
+and a transformed r.v. `\(U=(U_1,...U_p)'\)`, s.t. `\(U_i=F_i(Y_i;\theta).\)`
+
+--
+
+The joint CDF `\(C_{F_Y}(u;\theta)\)` of `\(U\)` is **the copula function of `\(F_Y\)`**,
+
+--
+
+and its density `\(c_{F_Y}(u;\theta)\)` is **the copula density function**.
+
+--
+
+&lt;/br&gt;
+
+.rmk[*U*s are legit r.v. and are dealt accordingly:&lt;/br&gt;all the dependency measures, transformations, etc. can be obtained]
+
+---
+class: animated, fadeIn
+###Definition &amp; important properties
+##Gaussian copula
+
+`$$Y\sim\mathcal{N}(\mathbb{O}_p;P),\;\text{and}\;U_i=\Phi_{0,1}(Y_i).$$`
+
+--
+
+The joint CDF of `\(U\)` is **the Gaussian copula**:
+
+`$$C_{\mathcal{N}}(u;P)=F_{\mathcal{N(\mathbb{O}_p,P)}}(\phi(u);P),$$`
+
+with the **copula density**
+
+`$$\log c_\mathcal{N}(u;P)=-\frac{1}{2}\log|P|-\frac{1}{2}\phi'(u)\cdot(P^{-1}-I_p)\cdot\phi(u),$$`
+
+`$$\phi(u)=\big(\Phi_{0,1}^{-1}(u_1),...,\Phi_{0,1}^{-1}(u_p)\big)'.$$`
+
+---
+class: animated, fadeIn
+###Measures of dependence
+##Gaussian copula
+
+- **Kendall's rank correlation**: `\(\tau_{ij}=\frac{2}{\pi}\text{asin}(P_{ij})\)`.
+
+- **Spearman's rank correlation**: `\(\text{Corr}(U)=\frac{6}{\pi}\text{asin}\left(\frac{P}{2}\right)\)`.
+
+--
+
+- **Approx. Spearman's rank correlation**: `\(\text{Corr}(U)\approx P\)`.
+
+--
+
+- **Underlying r.v. *Y* correlation**: `\(\text{Corr(Y)}=P\)`.
+
+---
+class: animated, fadeIn
+###Definition &amp; important properties
+##t copula
+
+`$$Y\sim MVT(P,\nu),\;\text{and}\;U_i=t_\nu(Y_i;\nu).$$`
+
+--
+
+### Measures of dependence
+
+- **Kendall's rank correlation**: `\(\tau_{ij}=\frac{2}{\pi}\text{asin}(P_{ij})\)`.
+
+--
+
+- **Approx. Spearman's rank correlation**: `\(\text{Corr}(U)\approx P\)`.
+
+--
+
+- **Underlying r.v. *Y* correlation**: `\(\text{Corr(Y)}=P\)`.
+.pull-right[.rmk[transformations between *Y* and *U* require knowledge of d.f.]]
+
+---
+class: animated, flipInX
+###Why t copula?
+##Tail dependence
+
+.center[![](stuff/snp500_top3_logr.png)]
+
+---
+class: animated, fadeIn
+##Approaches to estimation
+###Main idea
+Given the DGP
+
+`$$X\sim F_X=C_{F_Y}(F_{X_1}(x_1;\theta_1),...F_{X_p}(x_p;\theta_p);\Theta_C)$$`
+
+--
+
+the copula-related part and the marginals can be estimated separately:
+
+1. Estimate the marginals `\(\{\hat F_{X_i}(x)\}_{i=1,...p}\)`
+
+--
+
+2. Use the **pseudo-data** `\(U_i=\hat F_{X_i}(X_i)\)` to estimate `\(C_Y\)`.
+
+---
+class: animated, fadeIn
+###Approaches to estimation
+##Full MLE .rmk[Disregards the copula structure]
+
+.gb[Pro] The efficient estimator
+
+.rb[Con] Impractical even in LD, crucially impractical in HD
+
+--
+
+&lt;/br&gt;
+
+##Pseudo-likelihood (MPLE) .rmk[Treats the copula as the distribution of *U*.]
+
+.gb[Pro] Numerically, very close to FMLE, if `\(\hat F_{X_i}\)`s are good.
+
+.rb[Con] Impractical in HD
+
+---
+class: animated, fadeIn
+###Approaches to estimation
+##Method-of-moments-like estimators
+
+.rmk[Use the measures of dependence to estimate *some of* the parameters of copula]
+
+--
+
+.gb[Pro] Very practical, even in HD
+
+.rb[Con] Not well-conditioned estimates, sometimes even in LD
+
+--
+
+&lt;/br&gt;
+
+.bb[Solution] large covariance matrix estimators can be employed 
+
+--
+
+.pull-right[.rmk[MPLE needs to be used to estimate the remaining parameter of t copula] ]
+
+---
+class: animated, fadeIn
+###The intuition of 
+##Large covariance matrices shrinkage estimators
+
+.center[![](stuff/eigenval_distr.png)]
+
+---
+class: animated, fadeIn
+###The variety of
+##Large covariance matrices shrinkage estimators
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2004). Honey, I shrunk the sample covariance matrix. The Journal of Portfolio Management, 30(4), 110-119.]]
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2004). A well-conditioned estimator for large-dimensional covariance matrices. Journal of multivariate analysis, 88(2), 365-411.]]
+
+--
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2012). Nonlinear shrinkage estimation of large-dimensional covariance matrices. The Annals of Statistics, 40(2), 1024-1060.]]
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2017). Numerical implementation of the QuEST function. Computational Statistics &amp; Data Analysis, 115, 199-223.]]
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2018). Analytical nonlinear shrinkage of large-dimensional covariance matrices. University of Zurich, Department of Economics, Working Paper, (264).]]
+
+---
+class: animated, fadeIn
+###A rough sketch of
+##The simulation study
+
+Given *p*, *n*, *P*, `\(\{F_{X_i}\}_{i=1,...p}\)`, `\(C_Y(u;P)\)` we find and compare `\(\hat P\)`s:
+
+--
+
+1. Simulate data `\(X\)` from `\(C_Y(\{F_{X_i}(x)\}_i;P)\)` and switch to the pseudo-data `\(U_i=\hat F_{X_i}(X_i)\)`.
+
+--
+
+2. Estimate `\(P\)` from a variety of `\(\text{Corr}(U)\)` related measures.
+
+--
+
+3. Evaluate the quality of estimates.
+
+--
+
+4. Repeat 1 - 3 sufficient number of times.
+
+---
+class: animated, fadeIn
+###Some details of
+##The simulation study
+
+###The DGP and data
+
+- **Copulas**: Gaussian and t
+
+--
+
+- **Dimensions**: `\(p\in\{10,100,1000\}\)`
+
+--
+
+- **Matrix parameter**: identity or a non-sparse correlation
+
+--
+
+- **Dimensionality**: `\(\frac{1}{20}\le\frac{p}{n}\le20\)` .blank[.].gb[UHD!]
+
+--
+
+.rmk[*Other*: skew-t marginals, d.f.=8 for t copula, B&gt;1000]
+
+---
+class: animated, fadeIn
+###Some details of
+##The simulation study
+
+###The traditional estimators
+
+- Sample analog of Kendall's rank correlation
+
+- Sample analog of approx. Spearman's rank correlation
+
+--
+
+###Suggested alternative estimators
+
+- Linear and non-linear shrinkage estimators of pseudo-observations correlation
+
+--
+
+.rmk[for t copula, the d.f. parameter is estimated via MPLE]
+
+---
+class: animated, fadeIn
+###Some details of
+##The simulation study
+
+###Estimates quality criteria
+
+- **Sanity check**: positive-definiteness of `\(\hat P\)`
+
+--
+
+- **Closeness of the parameters values**: Euclidean loss,
+
+`$$EL(P,\hat P)=||\text{vech}(P-\hat P)||_E^2$$`
+
+--
+
+- **Closeness of the copulas**: Kullback - Leibler IC,
+
+`$$KLIC_{C_{\hat P}|C_P}=\mathbb{E}_{C_P}[\log c_P(u)-\log c_{\hat P}(u)]$$`
+
+---
+class: animated, fadeIn
+##Main results
+###Well-conditioned estimates
+
+- The traditional estimators are only positive-definite under LD.
+
+- Shrinkage-based estimators guarantee positive-definiteness.
+
+---
+class: animated, fadeIn
+##Main results
+###Distance measures
+
+- Shrinkage-based estimators generally outperform the traditional ones, very significantly in HD
+
+--
+
+- Non-linear shrinkage tends to outperform the linear one
+
+--
+
+- Few settings where the linear shrinkage is better .pull-right[.rmk[even then the gain of LSh is minimal]]
+
+  - Not very dispersed true eigenvalues
+  
+  - Sparse (identity) correlation matrix &amp; short samples 
+
+---
+class: animated, fadeIn
+##Main results
+###A typical performance slice #1
+
+.center[The "winning" KLIC: p=100, arbitrary P, Gaussian copula]
+
+.center[![](stuff/best_estimators_7_KLIC.png)]
+
+---
+class: animated, fadeIn
+##Main results
+###A typical performance slice #2
+
+.center[The "winning" KLIC: p=1000, identity P, t copula]
+
+.center[![](stuff/best_estimators_10_KLIC2.png)]
+
+---
+class: section, middle, center, animated, flipInY
+##UHD t copula application for
+#Large portfolio allocation
+###Empirical example
+
+---
+class: animated, fadeIn
+##What we do
+We apply t copula shrinkage estimation to allocate large portfolios of stocks and compare their performance with portfolio choices based on the traditional  estimators.
+
+--
+
+##Outline
+
+ - **Copulas &amp; portfolios**: motivation and intuition
+ 
+ - **Why UHD?** Data description
+ 
+ - **Modeling technique**
+ 
+ - **Main results and discussion**
+
+---
+class: animated, fadeIn
+##Copulas &amp; portfolios
+
+- Portfolio allocation is **one of the most popular applications** for the models of joint distribution of assets prices
+
+--
+
+- Portfolios' performance crucially depends on the **ability of the models to capture essential properties** of the data
+
+--
+
+  - Copulas allow to create **flexible models**
+  
+  - **Tail dependence** proved to be of dramatic importance
+
+---
+class: animated, fadeIn
+###Data description
+##Why UHD?
+
+- We use the listing of Wilshire 5000 index and obtain data on 3600+ assets from CRSP
+
+--
+
+- Each portfolio contains .bb[*p*=2500 assets] chosen randomly
+
+--
+
+- The univariate models of returns dynamics are simple
+
+- Only 6 months of 2017 are used for estimation, .bb[*n*=120 obs]
+
+--
+
+- Thus, the dimensionality is .bb[*p/n* &gt; 20] .blank[.].gb[UHD!]
+
+---
+class: animated, fadeIn
+###Modeling technique
+##The timeline
+ 
+ - January - June, 2017: **training period** &lt;/br&gt; .rmk[4 models of assets prices joint distr. are estimated]
+
+--
+
+ - end of June, 2017: **portfolio allocation** &lt;/br&gt; .rmk[each model produces Sharpe-maximizing portfolio]
+
+--
+
+ - July - September, 2017: **portfolio lifetime** &lt;/br&gt; .rmk[actual portfolio value is observed]
+
+--
+
+ - end of September, 2017: **performance measurement** &lt;/br&gt; .rmk[the final return and maximum drop-down are tracked]
+
+---
+class: animated, flipInX
+##Main results
+###Lifetime portfolios value dynamic: Example #1
+
+.center[![](stuff/return1.png)]
+
+---
+class: animated, flipInY
+##Main results
+###Lifetime portfolios value dynamic. Example #2
+.center[![](stuff/return4.png)]
+
+---
+class: animated, bounceIn
+##Main results
+###Portfolios performance overview
+.center[![](stuff/returns.png) .blank[..........] ![](stuff/downfalls.png)]
+
+---
+class: section, middle, animated, flipInX
+#Discussion and Further Research
+
+---
+class: animated, fadeIn
+##Results &amp; further research
+
+###1. Shrinkage is a powerful tool of estimation for copulas
+
+.bb[Further in this paper:] other estimators of matrix parameters
+
+.bb[Another work:] extended copulas (skewed versions)
+
+--
+
+###2. HD Copula modeling is beneficial in portfolio allocation
+
+.bb[Another work:] a profound dynamic model of joint distribution of assets prices based on copula and shrinkage
+
+.bb[Another work:] copula-based forecast combination technique
+
+---
+class: section, middle, animated, flipInX
+###Technical notes on
+#Shrinkage estimation
+##of large covariance matrices
+
+---
+class: animated, fadeIn
+
+#Large covariance matrix estimation problem
+
+Assume `\(x=(x_{1},...x_{p}),\;\mathbb{E}x=\mathbb{O}_p,\;\mathbb{E}[x'x]=\Sigma\;\text{p.d.}\)`
+
+--
+
+The problem then is to estimate `\(\Sigma\)`, given data `\(\{X_i\}_{i=1,...n}\sim\text{iid}\)`.
+
+--
+
+&lt;/br&gt;
+
+`\(S_n\equiv n^{-1}X'X\)` performs well, when "*p* is small".
+
+--
+
+&lt;/br&gt;
+
+For "large *p*", `\(S_n\)` is neither consistent, nor well-conditioned.
+
+**Large *p* ** assumes `\(p\ge n\)`, normally even `\(p&gt;&gt;n\)`.
+
+---
+class: animated, fadeIn
+
+##Statistical way of shrinkage
+
+`$$S_n^*=\rho_1D+\rho_2S_n$$`
+
+###The idea
+Deviate from `\(S_n\)` to `\(D\)` s.t. `\(S_n^*\)` is close to `\(\Sigma\)` &amp; well conditioned.
+
+
+###Alternative versions
+
+- **Choice of `\(D\)`**: identity, equicorrelated estimate of `\(\Sigma\)`, etc.
+
+--
+
+- **Approaches to choose `\(\rho\)`s**: heuristically, relate to `\(p/n\)`, *optimize*
+
+
+---
+class: animated, fadeIn
+##Random Matrix Theory Approach
+###Marchenko-Pastur Law
+To the same setup, `\(X_i\sim\text{iid},\mathbb{E}X_i=\mathbb{O}_p,\mathbb{E}[X_i'X_i]=\Sigma\)`, add:
+
+- `\(\{\lambda_1,...\lambda_p\}\)` are `\(\Sigma\)`'s eigenvalues
+
+- `\(\{l_1,...l_p\}\)` are the eigenvalues of `\(S_n\)`, given `\(p,n\)`
+
+--
+
+- **general asymptotics setup**: `\(p\to\infty,n\to\infty,\frac{p}{n}\to c\in(0,\infty)/\{1,\infty\}\)`.
+
+--
+
+The limiting distribution of `\(l\)`s is **Marchenko-Pastur distribution**
+
+---
+class: animated, zoomInLeft, center, middle, fadeIn
+
+**Marchenko-Pastur distribution** .rmk[the cont. part]
+
+![](stuff/mpd.gif)
+
+---
+class: animated, fadeIn 
+
+#Eigenvalues of large `\(S_n\)` vs `\(\Sigma\)`
+
+- The distributions of `\(\lambda\)`s, `\(l\)`s and the limiting MPD&lt;/br&gt;share the same **grand mean**
+
+--
+
+- Given particular `\(p,n,\;p&gt;n\)`,&lt;/br&gt;sample distribution of `\(l\)`s is "overdispersed"
+
+- The smaller e.v. are biased downwards,&lt;/br&gt;and the larger e.v. are biased upwards
+
+--
+
+- The limiting distribution of `\(l\)`s is "overdispersed", too.
+
+- But it can be used to estimate the "range" of the population e.v.
+
+---
+class: animated, zoomInLeft 
+
+![](stuff/evS.png)
+
+---
+class: animated, fadeIn
+
+#Eigenvalues shrinkage
+
+###The idea
+
+If we "knew" the limiting MPD of `\(l\)`s, we could use it to shrink the sample `\(l\)`s towards `\(\lambda\)`s.
+
+--
+
+Assume, such shrunk `\(l\)`s are available: `$$l^*=\rho_1\mu+\rho_2l.$$`
+
+--
+
+Then, given `\(S_n=\Gamma_n\text{diag}\{l_i\}_{i=1,...p}\Gamma_n'\)`, we can change `\(S_n\)` to `$$S^*=\Gamma_n\text{diag}\{l_i^*\}_{i=1,...p}\Gamma_n',$$` that is potentially a better estimate of `\(\Sigma\)`.
+
+---
+class: animated, fadeIn
+
+#Structural &amp; RMT Shrinkage
+
+###Structural shrinkage:
+
+`$$S_n^*=\rho_1D+\rho_2S_n$$`
+
+###RMT Shrinkage:
+
+`$$S^*=\Gamma_n\text{diag}\{\rho_1\mu+\rho_2l_i\}_{i=1,...p}\Gamma_n'$$`
+
+--
+
+&lt;/br&gt;
+
+.center[
+
+Set `\(D=I_p\)`, and `\(\rho_{1,2}\)` independent of `\(l\)`s, **these are equivalent**.
+
+]
+
+.center[
+
+###Constant shrinkage intensity estimator
+
+]
+
+---
+class: section, animated, bounceIn
+
+##"Honey, I shrunk the sample covariance matrix"
+
+###The optimal linear shrinkage estimator of Ledoit &amp; Wolf (2004)
+
+&lt;/br&gt;&lt;/br&gt;&lt;/br&gt;&lt;/br&gt;
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2004). Honey, I shrunk the sample covariance matrix. The Journal of Portfolio Management, 30(4), 110-119.]]
+
+.left[.rmk[Ledoit, O., &amp; Wolf, M. (2004). A well-conditioned estimator for large-dimensional covariance matrices. Journal of multivariate analysis, 88(2), 365-411.]]
+
+---
+class: animated, fadeIn
+
+#Optimal Linear Shrinkage
+
+*Optimal linear shrnkage* of Ledoit &amp; Wolf (2004) is a *constant shrinkage intensity estimator* `\(S^{**}\)` such that `$$S^{**}=\text{argmin}_{S^*(\rho_1,\rho_2)=\rho_1I_p+\rho_2S_n}||\Sigma-S^*(\rho_1,\rho_2)||^2.$$`
+
+--
+
+###The idea
+
+Since the distribution of the sample eigenvalues is overdispersed around the population eigenvalues distribution, let's relate this overdispersion to the difference between the population and sample covariance matrices to estimate the optimal shrinkage.
+
+---
+class: animated, fadeIn
+
+#Optimal Linear Shrinkage
+
+###Eigenvalues overdispersion
+
+`$$p^{-1}\mathbb{E}\left[\sum_{i=1}^p(\lambda_i-l_i)^2\right]=p^{-1}\sum_{i=1}^p(\lambda_i-\mu)^2+\mathbb{E}||S_n-\Sigma||^2.$$`
+
+--
+
+###The resulting estimator
+
+`$$S_n^{**}=\frac{b_n^2}{d_n^2}m_nI_p+\frac{d_n^2-b_n^2}{d_n^2}S_n$$`
+
+.center[
+
+### is asymptotically optimal in terms of Frobenius error&lt;/br&gt;and consistent under general asymptotics
+
+]
+
+---
+class: animated, fadeIn
+
+#Towards nonlinear shrinkage
+
+###Undershrinkage
+
+The optimal linear shrinkage estimator is optimal, but it's linear.
+
+--
+
+*Observation:* it might produce "undershrinkage".
+
+--
+
+&lt;/br&gt;
+
+**Potential improvement**: make `\(l^{**}(l)\)` a nonlinear function.
+
+--
+
+Particularly, relate *shrinkage intensity* to the sample eigenvalues:
+
+`$$l_i^{**}(l_i)=\rho_1(l_i)\mu+\rho_2(l_i)l_i.$$`
+
+---
+class: section, animated, flipInX
+
+###Derivation notes on 
+##Optimal Linear Shrinkage
+
+---
+class: animated, fadeIn
+##OLSh: the setup
+
+- `\(\{X_i\}_{i=1,...n}\sim\text{iid}(\mathbb{O}_p,\Sigma)\)`
+
+- `\(S_n\equiv n^{-1}X'X\)`
+
+- `\(S(\rho,\nu)\equiv\underbrace{\rho\nu}_{=\rho_1} I_p+\underbrace{(1-\rho)}_{=\rho_2}S_n\)`
+
+---
+class: animated, fadeIn
+##OLSh: the setup
+
+- **the optimization problem**: `$$(\hat{\rho},\hat{\nu})=\text{arg}\min_{\rho,\nu}\mathbb{E}\left[||S(\rho,\nu)-\Sigma||^2\right],$$`
+
+--
+
+`$$\Sigma^*\equiv S(\hat{\rho},\hat{\nu}).$$`
+
+---
+class: animated, fadeIn
+#OLSh: the infeasible estimator
+
+- **the solution to the optimization problem**:
+
+`$$\Sigma^*=\frac{\beta^2}{\delta^2}\mu I_p+\frac{\alpha^2}{\delta^2}S_n,$$`
+
+--
+
+- where:
+
+`$$\mu=p^{-1}\text{trace}(\Sigma),\;\alpha^2=||\Sigma-\mu I_p||^2,\;\beta^2=\mathbb{E}\left[||S_n-\Sigma||^2\right],$$`
+
+`$$\delta^2=\alpha^2+\beta^2=\mathbb{E}\left[||S_n-\mu I_p||^2\right].$$`
+
+--
+
+- the resulting estimator `\(\Sigma^*\)` is infeasible
+
+- but it can be estimated
+
+---
+class: animated, fadeIn
+##OLSh: the infeasible estimator
+
+`$$\mathbb{E}\left[||S(\rho,\nu)-\Sigma||^2\right]=\rho^2||\Sigma-\nu I_p||^2+(1-\rho)^2\mathbb{E}\left[||S_n-\Sigma||^2\right]$$`
+
+- the first term spits out `\(\hat{\nu}\)`:
+
+`$$||\Sigma-\nu I_p||^2=||\Sigma||^2-2\nu\text{trace}(\Sigma)+\nu^2,$$`
+
+`$$\hat{\nu}=p^{-1}\text{trace}(\Sigma)\equiv\mu.$$`
+
+- then `\(\hat{\rho}=\frac{\mathbb{E}\left[||S_n-\Sigma||^2\right]}{\mathbb{E}\left[||S_n-\mu I_p||^2\right]}=\frac{\beta^2}{\delta^2}\;\;-\;\)`**shrinkage intensity**
+
+---
+class: animated, fadeIn
+
+##OLSh: why eigenvalues?
+
+- `\(\mu=p^{-1}\sum_{i=1}^p\lambda_i=\mathbb{E}\left[p^{-1}\sum_{i=1}^pl_i\right]\)`
+
+- then `\(\alpha^2+\beta^2=\delta^2\)` becomes
+
+.center[
+
+`\(p^{-1}\mathbb{E}\left[\sum_{i=1}^p(l_i-\mu)^2\right]=p^{-1}\sum_{i=1}^p(\lambda_i-\mu)^2+\mathbb{E}\left[||S_n-\Sigma||^2\right]\)`
+
+]
+
+- and the eigenvalues of `\(\Sigma^*\)` are `\(\lambda_i^*=\frac{\beta^2}{\delta^2}\mu+\frac{\alpha^2}{\delta^2}l_i\)`.
+
+- this guarantees that `\(\Sigma^*\)` is p.d.
+
+---
+class: animated, fadeIn
+
+#OLSh: feasible &amp; asymptotically optimal estimator
+
+###the idea
+
+Find sample analogs of `\(\mu,\;\alpha,\;\beta\)` s.t. under *general asymptotics* the properties of the feasible estimator are the same as of `\(\Sigma^*\)`.
+
+--
+
+###the solution
+
+- `\(m_n\equiv\text{trace}(S_n)\)`
+
+- `\(d_n\equiv ||S_n-m_nI_p||^2\)`
+
+--
+
+- `\(\bar{b}_n\equiv n^{-2}\sum_{k=1}^n||X_k'X_k-S_n||^2\)`, and `\(b_n\equiv\min(\bar{b}_n,d_n)\)`
+
+--
+
+- `\(a_n\equiv d_n-b_n\)`.
+
+
+
+
+---
+class: section, animated, bounceIn
+##Thank you!
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%/%total%",
+"highlightLines": true,
+"ratio": "8:5"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
